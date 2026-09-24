@@ -1,0 +1,219 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeoGuesser — Explore the World</title>
+    <link rel="stylesheet" href="Styel.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header class="header">
+        <a href="#" class="logo">
+            <span>🌍</span>
+            GeoGuesser
+        </a>
+
+        <div class="header-info">
+            <span class="online-status"></span>
+            WORLD EXPLORER
+        </div>
+
+        <button class="profile-btn">Игрок</button>
+    </header>
+
+    <main class="main">
+
+        <section class="hero">
+            <div class="hero-badge">✦ GEOGRAPHY CHALLENGE</div>
+
+            <h1>Угадай <span>страну</span></h1>
+
+            <p>
+                Исследуй мир, открывай удивительные места
+                и проверь свои знания географии.
+            </p>
+        </section>
+
+        <section class="game-stats">
+            <div class="stat-card">
+                <div class="stat-icon">🎯</div>
+                <div>
+                    <span>Раунд</span>
+                    <h3 id="round">0 <small>/ 5</small></h3>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">⭐</div>
+                <div>
+                    <span>Твои очки</span>
+                    <h3 id="score">0</h3>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">🏆</div>
+                <div>
+                    <span>Рекорд</span>
+                    <h3 id="bestScore">0</h3>
+                </div>
+            </div>
+        </section>
+
+        <section class="game-container" id="gameContainer">
+
+            <div class="game-top">
+                <span class="round-label">
+                    <span class="live-dot"></span>
+                    ТЕКУЩЕЕ ЗАДАНИЕ
+                </span>
+
+                <div class="timer" id="timer">
+                    <span>◷</span>
+                    <span id="time">30</span>
+                    <small>сек</small>
+                </div>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress"></div>
+            </div>
+
+            <div class="location-box">
+                <img
+                    src=""
+                    alt="Загадочная локация"
+                    class="location-image"
+                    id="locationImage"
+                >
+
+                <div class="image-overlay"></div>
+
+                <div class="location-tag">
+                    📍 UNKNOWN LOCATION
+                </div>
+
+                <div class="image-bottom">
+                    🌐 Где это находится?
+                </div>
+            </div>
+
+            <div class="question-box">
+                <span class="question-label">ВОПРОС</span>
+
+                <h2 id="question">
+                    В какой стране находится это место?
+                </h2>
+
+                <p class="question-description">
+                    Выбери правильный вариант ответа
+                </p>
+            </div>
+
+            <div class="answers-grid" id="answers"></div>
+
+            <div class="feedback" id="feedback">
+                <span id="feedbackText"></span>
+            </div>
+
+            <div class="game-bottom">
+                <div class="hint">
+                    💡 Внимательно изучи фотографию
+                </div>
+
+                <button class="next-btn" id="nextBtn" disabled>
+                    Следующий раунд →
+                </button>
+            </div>
+
+        </section>
+
+        <section class="start-screen" id="startScreen">
+            <div class="start-icon">🌍</div>
+
+            <h2>Готов к путешествию?</h2>
+
+            <p>
+                5 случайных локаций, 30 секунд на каждый раунд
+                и до 5000 очков за идеальную игру.
+            </p>
+
+            <button class="start-btn" id="startBtn">
+                Начать игру <span>→</span>
+            </button>
+        </section>
+
+        <section class="result-screen" id="resultScreen">
+            <div class="result-icon">🏆</div>
+
+            <span class="question-label">ИГРА ЗАВЕРШЕНА</span>
+
+            <h2 id="resultTitle">Отличная игра!</h2>
+
+            <p>Твой результат</p>
+
+            <div class="result-score" id="finalScore">0</div>
+
+            <div class="result-details">
+                <div>
+                    <span>Правильные ответы</span>
+                    <strong id="correctAnswers">0 / 5</strong>
+                </div>
+
+                <div>
+                    <span>Лучший результат</span>
+                    <strong id="finalBestScore">0</strong>
+                </div>
+            </div>
+
+            <button class="start-btn" id="restartBtn">
+                Играть снова ↻
+            </button>
+        </section>
+
+        <section class="bottom-info">
+            <div class="bottom-info-item">
+                <span>🌎</span>
+                <div>
+                    <h4>Исследуй мир</h4>
+                    <p>Уникальные локации</p>
+                </div>
+            </div>
+
+            <div class="bottom-info-item">
+                <span>⚡</span>
+                <div>
+                    <h4>Проверь себя</h4>
+                    <p>30 секунд на вопрос</p>
+                </div>
+            </div>
+
+            <div class="bottom-info-item">
+                <span>🏅</span>
+                <div>
+                    <h4>Стань экспертом</h4>
+                    <p>Набери 5000 очков</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <span>🌍 GeoGuesser</span>
+        <span>Explore the world, one guess at a time.</span>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+
+    <script src="Qeastion.js"></script>
+    <script src="script.js"></script>
+
+</body>
+</html>
