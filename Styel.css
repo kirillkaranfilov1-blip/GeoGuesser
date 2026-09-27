@@ -436,7 +436,7 @@ button:focus-visible {
     font-size: 13px;
     font-weight: 800;
     cursor: pointer;
-    transition: 0.25s;
+    transition: background 0.25s, color 0.25s, transform 0.25s;
 }
 
 .next-btn:hover:not(:disabled),
@@ -569,11 +569,6 @@ button:focus-visible {
 .split-char,
 .split-word {
     display: inline-block;
-}
-
-.hero h1,
-.question-box h2 {
-    overflow: hidden;
 }
 
 @media (prefers-reduced-motion: reduce) {
