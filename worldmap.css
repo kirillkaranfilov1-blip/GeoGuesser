@@ -1,0 +1,607 @@
+﻿/* ============================================================
+   worldmap.css — стили режима «Карта мира»
+   Использует CSS-переменные из Styel.css
+   ============================================================ */
+
+/* ---------- Оверлей режима ---------- */
+#worldMapMode {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: var(--bg);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#worldMapMode.wm-active {
+    display: flex;
+    flex-direction: column;
+}
+
+/* ---------- Шапка режима ---------- */
+.wm-header {
+    height: 64px;
+    padding: 0 6%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    flex-shrink: 0;
+}
+
+.wm-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--text);
+}
+
+.wm-title-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--green);
+    background: rgba(74,222,128,0.08);
+    border: 1px solid rgba(74,222,128,0.15);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.wm-exit-btn {
+    padding: 9px 18px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.22s ease;
+}
+
+.wm-exit-btn:hover {
+    border-color: rgba(248,113,113,0.4);
+    color: var(--red);
+    background: rgba(248,113,113,0.06);
+}
+
+/* ---------- Основной контент ---------- */
+.wm-content {
+    flex: 1;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 24px 24px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* ---------- HUD: прогресс и очки ---------- */
+.wm-hud {
+    display: grid;
+    grid-template-columns: 1fr auto auto auto;
+    align-items: center;
+    gap: 16px;
+}
+
+.wm-progress-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.wm-progress-label {
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.wm-live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: wm-pulse 2s infinite;
+}
+
+@keyframes wm-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+.wm-progress-bar {
+    height: 5px;
+    background: var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.wm-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #22c55e, #86efac);
+    border-radius: inherit;
+    transition: width 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.wm-stat-pill {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 12px 18px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    min-width: 80px;
+}
+
+.wm-stat-pill span:first-child {
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+}
+
+.wm-stat-pill strong {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text);
+}
+
+.wm-stat-pill.wm-correct strong { color: var(--green); }
+
+/* ---------- Вопрос ---------- */
+.wm-question-box {
+    padding: 24px 28px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+}
+
+.wm-question-label {
+    color: var(--green);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.wm-question-text {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.5;
+    color: var(--text);
+}
+
+.wm-question-hint {
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+/* ---------- Обратная связь ---------- */
+.wm-feedback {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+}
+
+.wm-feedback.wm-show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.wm-feedback.wm-success {
+    background: rgba(34,197,94,0.12);
+    border: 1px solid rgba(74,222,128,0.35);
+    color: var(--green);
+}
+
+.wm-feedback.wm-error {
+    background: rgba(239,68,68,0.1);
+    border: 1px solid rgba(248,113,113,0.35);
+    color: var(--red);
+}
+
+/* ---------- Подсказки ---------- */
+.wm-hints {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.wm-hint-btn {
+    padding: 10px 18px;
+    background: var(--card-light);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.22s ease;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.wm-hint-btn:hover:not(:disabled) {
+    border-color: rgba(74,222,128,0.35);
+    background: rgba(74,222,128,0.06);
+    color: var(--green);
+}
+
+.wm-hint-btn:disabled,
+.wm-hint-btn.wm-used {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+/* ---------- Карта ---------- */
+.wm-map-wrap {
+    position: relative;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    overflow: hidden;
+    min-height: 380px;
+}
+
+.wm-map-container {
+    width: 100%;
+    height: 100%;
+    min-height: 380px;
+}
+
+/* svgMap стили — перезапись под тему проекта */
+.wm-map-wrap .svgMap-map-wrapper {
+    background: transparent !important;
+}
+
+.wm-map-wrap .svgMap-map-image {
+    background: transparent !important;
+}
+
+.wm-map-wrap svg {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+/* Страны по умолчанию */
+.wm-map-wrap .svgMap-map-image path,
+.wm-map-wrap .svgMap-map-image polygon,
+.wm-map-wrap .svgMap-map-image circle {
+    fill: #1e2d45;
+    stroke: #0b0f19;
+    stroke-width: 0.5;
+    transition: fill 0.2s ease;
+    cursor: pointer;
+}
+
+/* Hover */
+.wm-map-wrap .svgMap-map-image path:hover,
+.wm-map-wrap .svgMap-map-image polygon:hover {
+    fill: #2a4166;
+}
+
+/* Состояния стран */
+.wm-map-wrap [data-wm-state="hover"] {
+    fill: #2a4166 !important;
+}
+
+.wm-map-wrap [data-wm-state="selected"] {
+    fill: #3b5998 !important;
+}
+
+.wm-map-wrap [data-wm-state="correct"] {
+    fill: rgba(34,197,94,0.7) !important;
+    stroke: #4ade80 !important;
+    stroke-width: 1px !important;
+}
+
+.wm-map-wrap [data-wm-state="incorrect"] {
+    fill: rgba(239,68,68,0.7) !important;
+    stroke: #f87171 !important;
+    stroke-width: 1px !important;
+}
+
+.wm-map-wrap [data-wm-state="hint"] {
+    fill: rgba(250,204,21,0.35) !important;
+    stroke: rgba(250,204,21,0.7) !important;
+    stroke-width: 1px !important;
+}
+
+.wm-map-wrap [data-wm-state="disabled"] {
+    cursor: default !important;
+}
+
+/* Tooltip */
+.wm-tooltip {
+    position: fixed;
+    z-index: 9999;
+    background: rgba(11,15,25,0.92);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 7px 13px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    white-space: nowrap;
+    backdrop-filter: blur(8px);
+}
+
+.wm-tooltip.wm-tooltip-show {
+    opacity: 1;
+}
+
+/* ---------- Нижняя панель ---------- */
+.wm-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.wm-bottom-hint {
+    color: var(--muted);
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.wm-next-btn {
+    padding: 13px 28px;
+    background: var(--green-dark);
+    color: #052e16;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.wm-next-btn:hover:not(:disabled) {
+    background: var(--green);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(74,222,128,0.3);
+}
+
+.wm-next-btn:active:not(:disabled) {
+    transform: translateY(0) scale(0.98);
+}
+
+.wm-next-btn:disabled {
+    opacity: 0.38;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* ---------- Экран результатов ---------- */
+.wm-result-screen {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 50px 28px;
+    gap: 20px;
+    max-width: 620px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.wm-result-screen.wm-show {
+    display: flex;
+}
+
+.wm-result-icon {
+    font-size: 56px;
+    line-height: 1;
+}
+
+.wm-result-label {
+    color: var(--green);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+}
+
+.wm-result-title {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text);
+    margin: 0;
+}
+
+.wm-result-score {
+    font-size: 64px;
+    font-weight: 800;
+    color: var(--green);
+    line-height: 1;
+}
+
+.wm-result-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    width: 100%;
+}
+
+.wm-result-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.wm-result-card .wm-rc-icon { font-size: 22px; }
+.wm-result-card .wm-rc-label {
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+.wm-result-card .wm-rc-value {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text);
+}
+
+.wm-result-actions {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.wm-result-actions .wm-next-btn {
+    min-width: 180px;
+}
+
+.wm-back-btn {
+    padding: 13px 28px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.22s ease;
+    min-width: 180px;
+}
+
+.wm-back-btn:hover {
+    border-color: rgba(74,222,128,0.3);
+    color: var(--green);
+}
+
+/* ---------- Кнопка режима на стартовом экране ---------- */
+.wm-mode-picker {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+}
+
+.wm-mode-btn {
+    flex: 1;
+    min-width: 130px;
+    padding: 14px 16px;
+    background: var(--card-light);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    transition: all 0.22s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.wm-mode-btn .wm-mode-icon { font-size: 22px; }
+
+.wm-mode-btn:hover {
+    border-color: rgba(74,222,128,0.3);
+    color: var(--text);
+}
+
+.wm-mode-btn.wm-mode-active {
+    border-color: var(--green);
+    background: rgba(74,222,128,0.08);
+    color: var(--green);
+}
+
+/* ---------- Адаптив ---------- */
+@media (max-width: 768px) {
+    .wm-hud {
+        grid-template-columns: 1fr;
+    }
+
+    .wm-hud .wm-stat-pill {
+        flex-direction: row;
+        justify-content: space-between;
+        min-width: auto;
+    }
+
+    .wm-hud > .wm-stat-pill {
+        grid-column: auto;
+    }
+
+    .wm-hud {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .wm-progress-wrap {
+        width: 100%;
+    }
+
+    .wm-question-text {
+        font-size: 18px;
+    }
+
+    .wm-result-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .wm-map-wrap {
+        min-height: 240px;
+    }
+
+    .wm-map-container {
+        min-height: 240px;
+    }
+
+    .wm-bottom {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .wm-next-btn {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .wm-content { padding: 16px 16px 32px; }
+    .wm-result-grid { grid-template-columns: 1fr 1fr; }
+    .wm-result-score { font-size: 48px; }
+}
