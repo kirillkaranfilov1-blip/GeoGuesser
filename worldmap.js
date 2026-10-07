@@ -124,21 +124,28 @@
     }
 
     /* === 7. КАРТА: получение путей === */
-    function mapCont() { return document.getElementById("wmMapContainer"); }
+    var MAP_ID = "wmMapContainer";
 
+    function mapCont() { return document.getElementById(MAP_ID); }
+
+    /* svgMap 2.x: id="<targetElementID>-map-country-XX", 1.x: id="svgMap-country-XX" */
     function pathsByCode(code) {
         var c = mapCont(); if (!c) return [];
-        return Array.from(c.querySelectorAll('[id="svgMap-country-' + code + '"]'));
+        return Array.from(c.querySelectorAll(
+            '[id="' + MAP_ID + '-map-country-' + code + '"], [id="svgMap-country-' + code + '"]'
+        ));
     }
 
     function allPaths() {
         var c = mapCont(); if (!c) return [];
-        return Array.from(c.querySelectorAll("[id^='svgMap-country-']"));
+        return Array.from(c.querySelectorAll(
+            "[id^='" + MAP_ID + "-map-country-'], [id^='svgMap-country-']"
+        ));
     }
 
     function codeFromPath(p) {
         var id = p.getAttribute("id") || "";
-        var m = id.match(/svgMap-country-([A-Z]{2,3})/);
+        var m = id.match(/-country-([A-Z]{2,3})$/);
         return m ? m[1] : null;
     }
 
@@ -159,6 +166,20 @@
     }
 
     /* === 8. ОБРАБОТЧИКИ КАРТЫ === */
+    /* Перетаскивание карты (pan) не должно засчитываться как клик по стране */
+    var drag = { x: 0, y: 0, moved: false };
+
+    function attachDragGuard() {
+        var c = mapCont(); if (!c || c.dataset.wmDrag) return;
+        c.dataset.wmDrag = "1";
+        c.addEventListener("pointerdown", function(e) {
+            drag.x = e.clientX; drag.y = e.clientY; drag.moved = false;
+        });
+        c.addEventListener("pointermove", function(e) {
+            if (Math.abs(e.clientX - drag.x) > 6 || Math.abs(e.clientY - drag.y) > 6) drag.moved = true;
+        });
+    }
+
     function attachMapHandlers() {
         allPaths().forEach(function(path) {
             var code = codeFromPath(path);
@@ -183,15 +204,9 @@
             });
 
             path.addEventListener("click", function() {
-                if (wmState.mapLocked || wmState.answered) return;
+                if (wmState.mapLocked || wmState.answered || drag.moved) return;
                 handleClick(code);
             });
-
-            path.addEventListener("touchend", function(e) {
-                e.preventDefault();
-                if (wmState.mapLocked || wmState.answered) return;
-                handleClick(code);
-            }, { passive: false });
         });
     }
 
@@ -517,32 +532,40 @@
         var cont = mapCont();
         if (!cont) return;
         cont.innerHTML = "";
+        cont.className = "wm-map-container";
+        hideTip();
 
         if (typeof svgMap === "undefined") {
             cont.innerHTML = '<p style="color:var(--muted);text-align:center;padding:60px 20px">Загрузка карты...</p>';
+            loadLib(initMap);
             return;
         }
 
+        /* Каждый экземпляр svgMap добавляет свой tooltip в <body> */
+        document.querySelectorAll("body > .svgMap-tooltip").forEach(function(t) { t.remove(); });
+
         try {
             new svgMap({
-                targetElementID: "wmMapContainer",
+                targetElementID: MAP_ID,
                 colorMax:    "#1e2d45",
                 colorMin:    "#1e2d45",
                 colorNoData: "#1e2d45",
                 flagType:    "none",
+                showTooltips: false,
                 data: {
                     data: { x: { name:"", format:"", thousandSeparator:"" } },
                     applyData: "x",
                     values: {}
-                },
-                onGetTooltip: function() { return ""; }
+                }
             });
         } catch(e) {
             console.warn("[WorldMap] svgMap error:", e);
+            cont.innerHTML = '<p style="color:var(--muted);text-align:center;padding:60px 20px">Не удалось загрузить карту</p>';
+            return;
         }
 
-        /* Вешаем обработчики после рендера */
-        setTimeout(attachMapHandlers, 400);
+        attachDragGuard();
+        attachMapHandlers();
     }
 
     /* === 17. СТАРТ / РЕСТАРТ === */
@@ -594,6 +617,7 @@
         if (!overlay) return;
 
         function doClose() {
+            hideTip();
             overlay.classList.remove("wm-active");
             document.body.style.overflow = "";
         }

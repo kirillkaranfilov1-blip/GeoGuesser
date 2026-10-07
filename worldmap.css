@@ -289,6 +289,37 @@
     height: auto;
 }
 
+/* Кнопки масштабирования */
+.wm-map-wrap .svgMap-map-controls-wrapper {
+    box-shadow: none;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.wm-map-wrap .svgMap-map-controls-zoom {
+    background: var(--card-light);
+}
+
+.wm-map-wrap .svgMap-control-button {
+    background-color: var(--card-light);
+}
+
+.wm-map-wrap .svgMap-control-button.svgMap-zoom-button::before,
+.wm-map-wrap .svgMap-control-button.svgMap-zoom-button::after {
+    background: var(--muted);
+}
+
+.wm-map-wrap .svgMap-control-button.svgMap-zoom-button:hover::before,
+.wm-map-wrap .svgMap-control-button.svgMap-zoom-button:hover::after {
+    background: var(--green);
+}
+
+.wm-map-wrap .svgMap-control-button.svgMap-zoom-button.svgMap-disabled::before,
+.wm-map-wrap .svgMap-control-button.svgMap-zoom-button.svgMap-disabled::after {
+    background: var(--border);
+}
+
 /* Страны по умолчанию */
 .wm-map-wrap .svgMap-map-image path,
 .wm-map-wrap .svgMap-map-image polygon,
